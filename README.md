@@ -1,7 +1,7 @@
 ## typesafe-get
 
 Safely drill for nested values
-
+  
 ## Install
 
 ```sh
@@ -27,10 +27,10 @@ get({ a: "a" }, obj => obj[0].c.d, "") // "";
 
 ```typescript
 
-function get<I, O>(
+export declare function get<O, I>(
   obj: I,
-  reducer: (obj: I) => O,
-  defaultTo?: O
-): O | undefined;
+  reducer: (obj: Exclude<I, undefined | null>) => O,
+  defaultTo: O
+): Exclude<O, null | undefined>;
 
 ```
