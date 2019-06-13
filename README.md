@@ -11,12 +11,14 @@ Safely drill for nested values
 ## Usage
 
 ```typescript
-import get from "typesafe-get";
+import get from "ts-typesafe-get";
 
-get({ a: 1 }, obj => obj.a, 0) // 1;
-get({}, obj => obj.a, 0) // 0;
-get({ a: "a" }, obj => obj.a, "") // "a";
-get({ a: "a" }, obj => obj[0].c.d, "") // "";
+const obj = { a: 1, b: 2 };
+const undef = undefined;
+expect(get(() => obj.b, -1)).toEqual(2);
+expect(get(() => obj.c, -1)).toEqual(-1);
+expect(get(() => obj.a, -1)).toEqual(1);
+expect(get(() => undef.a[0].b, -1)).toEqual(-1);
   
 ```
 
@@ -26,11 +28,8 @@ get({ a: "a" }, obj => obj[0].c.d, "") // "";
 
 
 ```typescript
-
-export declare function get<O, I>(
-  obj: I,
-  reducer: (obj: Exclude<I, undefined | null>) => O,
-  defaultTo: O
-): Exclude<O, null | undefined>;
-
+function get<O>(
+  reducer: () => O,
+  defaultTo: Exclude<O, undefined | null>
+): Exclude<O, undefined | null>;
 ```

@@ -1,17 +1,19 @@
 import get from "../index";
 
+// get({a:2}, 'b', 0)
+
 describe("get", () => {
   test("exports", () => {
     expect(get).toBeTruthy();
   });
   test("works", () => {
-    expect(get({ a: 1 }, obj => obj.a, 0)).toEqual(1);
+    const obj = { a: 1, b: 2 };
+    const undef = undefined;
+    expect(get(() => obj.b, -1)).toEqual(2);
     //@ts-ignore
-    expect(get({}, obj => obj.a, 0)).toEqual(0);
+    expect(get(() => obj.c, -1)).toEqual(-1);
+    expect(get(() => obj.a, -1)).toEqual(1);
     //@ts-ignore
-    expect(get({}, obj => obj.a)).toEqual(undefined);
-    expect(get({ a: "a" }, obj => obj.a, "")).toEqual("a");
-    // @ts-ignore
-    expect(get({ a: "a" }, obj => obj[0].c.d, "")).toEqual("");
+    expect(get(() => undef.a[0].b, -1)).toEqual(-1);
   });
 });
